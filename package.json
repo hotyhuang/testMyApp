@@ -1,0 +1,22 @@
+{
+  "name": "testmyapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hotyhuang/testMyApp.git"
+  },
+  "author": "hotyhuang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hotyhuang/testMyApp/issues"
+  },
+  "homepage": "https://github.com/hotyhuang/testMyApp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
