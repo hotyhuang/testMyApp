@@ -1,11 +1,17 @@
 version: 2.1
+
+workflow:
+  test-yoyo:
+    jobs:
+      - i-am-king-of-the-world
+
 jobs:
-  build:
+  i-am-king-of-the-world:
     docker:
-      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
+      - image: cimg/node:17.0.1
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - run: node --version
