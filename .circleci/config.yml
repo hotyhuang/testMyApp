@@ -13,11 +13,14 @@ jobs:
   install:
     docker:
       - image: cimg/node:17.0.1
+    working_directory: ~/circleci-demo-workflows
     steps:
       - checkout # check out the code in the project directory
       - run:
           name: Install Dependencies
-          command: npm install
+          command: |
+            pwd
+            npm install
       - save_cache: # Caches dependencies with a cache key
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
@@ -40,7 +43,7 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: list files
-          working_directory: ~/circleci-demo-workflows
+          working_directory: /home/circleci/circleci-demo-workflows
           command: |
             pwd
             ls -al
