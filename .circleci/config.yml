@@ -10,20 +10,18 @@ jobs:
             echo Start pipeline
             whoami
             pwd
-      - save_cache: # Caches dependencies with a cache key
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/circleci-demo-workflows
   install:
     docker:
       - image: cimg/node:17.0.1
     steps:
-      - restore_cache: # Restores the cached dependency.
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - checkout # check out the code in the project directory
       - run:
           name: Install Dependencies
           command: npm install
+      - save_cache: # Caches dependencies with a cache key
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/circleci-demo-workflows
   list1:
     docker:
       - image: cimg/node:17.0.1
