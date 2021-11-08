@@ -1,65 +1,57 @@
 version: 2.1
 
 jobs:
-  build1:
+  whoami:
     docker:
-      - image: circleci/ruby:2.4-node
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      - image: circleci/postgres:9.4.12-alpine
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: ubuntu:latest
     steps:
-      - checkout
+      - run:
+          command: |
+            echo Start pipeline
+            whoami
+            pwd
       - save_cache: # Caches dependencies with a cache key
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/circleci-demo-workflows
-
-  build2:
+  install:
     docker:
-      - image: circleci/ruby:2.4-node
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      - image: circleci/postgres:9.4.12-alpine
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: cimg/node:17.0.1
+    steps:
+      - restore_cache: # Restores the cached dependency.
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - checkout # check out the code in the project directory
+      - run:
+          name: Install Dependencies
+          command: npm install
+  list1:
+    docker:
+      - image: cimg/node:17.0.1
+    steps:
+      - run:
+          name: list files
+          command: npm run list
+  list2:
+    docker:
+      - image: ubuntu:latest
     steps:
       - restore_cache: # Restores the cached dependency.
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
-          name: Running tests
-          command: make test
-  build3:
-    docker:
-      - image: circleci/ruby:2.4-node
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      - image: circleci/postgres:9.4.12-alpine
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    steps:
-      - restore_cache: # Restores the cached dependency.
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - run:
-          name: Precompile assets
-          command: bundle exec rake assets:precompile
+          name: list files
+          command: npm run list
 #...
 workflows:
   build_and_test: # name of your workflow
     jobs:
-      - build1
-      - build2:
+      - whoami
+      - install
+          requires: whoami
+      - list1:
           requires:
-           - build1 # wait for build1 job to complete successfully before starting
+           - install # wait for build1 job to complete successfully before starting
            # see circleci.com/docs/2.0/workflows/ for more examples.
-      - build3:
+      - list2:
           requires:
-           - build1 # wait for build1 job to complete successfully before starting
+           - install # wait for build1 job to complete successfully before starting
            # run build2 and build3 concurrently to save time.
