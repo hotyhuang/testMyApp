@@ -25,6 +25,7 @@ jobs:
   list1:
     docker:
       - image: cimg/node:17.0.1
+    working_directory: ~/circleci-demo-workflows
     steps:
       - restore_cache: # Restores the cached dependency.
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
@@ -39,6 +40,7 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: list files
+          working_directory: ~/circleci-demo-workflows
           command: |
             pwd
             ls -al
