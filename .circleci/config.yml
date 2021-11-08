@@ -28,6 +28,8 @@ jobs:
     docker:
       - image: cimg/node:17.0.1
     steps:
+      - restore_cache: # Restores the cached dependency.
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: list files
           command: npm run list
@@ -39,7 +41,9 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: list files
-          command: npm run list
+          command: |
+            pwd
+            ls -al
 #...
 workflows:
   build_and_test: # name of your workflow
