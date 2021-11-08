@@ -45,8 +45,9 @@ workflows:
   build_and_test: # name of your workflow
     jobs:
       - whoami
-      - install
-          requires: whoami
+      - install:
+          requires:
+            - whoami
       - list1:
           requires:
            - install # wait for build1 job to complete successfully before starting
