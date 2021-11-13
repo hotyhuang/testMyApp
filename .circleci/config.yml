@@ -34,7 +34,10 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: list files
-          command: npm run list
+          command: |
+            pwd
+            npm run list
+            node -v
   list2:
     docker:
       - image: ubuntu:latest
@@ -47,6 +50,7 @@ jobs:
           command: |
             pwd
             ls -al
+            node -v
 #...
 workflows:
   build_and_test: # name of your workflow
