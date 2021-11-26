@@ -22,8 +22,10 @@ commands:
             - project
   load_workspace:
     steps:
+      - run: |
+          cd ~ && pwd && ls -al
       - attach_workspace:
-          at: ~/project
+          at: ~/
 
 jobs:
   install:
@@ -55,8 +57,6 @@ jobs:
           command: |
             pwd
             ls -al
-      - run: |
-          cd ~ && pwd && ls -al
   summarize:
     <<: *yoyo
     steps:
