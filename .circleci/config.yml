@@ -51,12 +51,12 @@ jobs:
     <<: *yoyo
     steps:
       - sayhello
+        to: "myself"
       - load_workspace
       - run:
         command: |
           whoami
           node -v
-          echo is this still working? << parameters.to >>
   summarize:
     <<: *yoyo
     steps:
