@@ -55,6 +55,8 @@ jobs:
           command: |
             pwd
             ls -al
+      - run: |
+          cd ~ && pwd && ls -al
   summarize:
     <<: *yoyo
     steps:
