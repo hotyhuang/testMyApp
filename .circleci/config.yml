@@ -17,7 +17,7 @@ commands:
   save_workspace:
     steps:
       - persist_to_workspace:
-          root: ~
+          root: /home/circleci
           paths:
             - project
   load_workspace:
