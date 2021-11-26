@@ -35,6 +35,9 @@ jobs:
           command: |
             pwd
             npm install
+      - run: |
+          pwd
+          ls -al
       - save_workspace
   step_one:
     <<: *yoyo
