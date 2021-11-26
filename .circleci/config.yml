@@ -45,12 +45,12 @@ jobs:
       - sayhello
       - load_workspace
       - run: npm test
-  step_two:
-    <<: *yoyo
-    steps:
-      - sayhello
-      - load_workspace
-      - run: pwd
+  # step_two:
+  #   <<: *yoyo
+  #   steps:
+  #     - sayhello
+  #     - load_workspace
+  #     - run: pwd
   step_three:
     <<: *yoyo
     steps:
@@ -59,8 +59,8 @@ jobs:
       - load_workspace
       - run:
           command: |
-            whoami
-            node -v
+            pwd
+            ls -al
   summarize:
     <<: *yoyo
     steps:
