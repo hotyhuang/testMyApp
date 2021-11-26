@@ -23,7 +23,7 @@ commands:
   load_workspace:
     steps:
       - attach_workspace:
-          at: ~/
+          at: ~/project
 
 jobs:
   install:
