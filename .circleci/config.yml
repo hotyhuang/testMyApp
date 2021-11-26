@@ -17,9 +17,9 @@ commands:
   save_workspace:
     steps:
       - persist_to_workspace:
-          root: ~/project
+          root: ~
           paths:
-            - testMyApp
+            - project
   load_workspace:
     steps:
       - attach_workspace:
