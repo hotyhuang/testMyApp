@@ -52,10 +52,11 @@ jobs:
     steps:
       - sayhello
       - load_workspace
-      - run: |
-        whoami
-        node -v
-        echo is this still working? << parameters.to >>
+      - run:
+        command: |
+          whoami
+          node -v
+          echo is this still working? << parameters.to >>
   summarize:
     <<: *yoyo
     steps:
