@@ -17,12 +17,13 @@ commands:
   save_workspace:
     steps:
       - persist_to_workspace:
-        root: ~/project
-        paths: src/public/
+          root: ~/project
+          paths:
+            - src/public/
   load_workspace:
     steps:
       - attach_workspace:
-        at: ~/project
+          at: ~/project
 
 jobs:
   install:
@@ -30,10 +31,10 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install Dependencies
-        command: |
-          pwd
-          npm install
+          name: Install Dependencies
+          command: |
+            pwd
+            npm install
       - save_workspace
   step_one:
     <<: *yoyo
@@ -50,13 +51,13 @@ jobs:
   step_three:
     <<: *yoyo
     steps:
-      - sayhello
-        to: "myself"
+      - sayhello:
+          to: "myself"
       - load_workspace
       - run:
-        command: |
-          whoami
-          node -v
+          command: |
+            whoami
+            node -v
   summarize:
     <<: *yoyo
     steps:
@@ -69,17 +70,17 @@ workflows:
     jobs:
       - install
       - step_one:
-        requires:
-          - install
+          requires:
+            - install
       - step_two:
-        type: approval
-        requires:
-          - install
+          type: approval
+          requires:
+            - install
       - step_three:
-        requires:
-          - install
+          requires:
+            - install
       - summarize:
-        requires:
-          - step_one
-          - step_two
+          requires:
+            - step_one
+            - step_two
             - step_three
