@@ -1,47 +1,84 @@
 version: 2.1
 
-jobs:
-  one:
-    docker:
-      - image: circleci/ruby:2.4.1
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    steps:
-      - checkout
-      - run: echo "A first hello"
-      - run: mkdir -p my_workspace
-      - run: echo "Trying out workspaces" > my_workspace/echo-output
-      - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory
-          root: my_workspace
-          # Must be relative path from root
-          paths:
-            - echo-output
-  two:
-    docker:
-      - image: circleci/ruby:2.4.1
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    steps:
-      - checkout
-      - run: echo "A more familiar hi"
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: my_workspace
+defaults: &yoyo
+  docker:
+    - image: cimg/node:17.0.1
+  working_directory: ~/project
 
+commands:
+  sayhello:
+    description: "A very simple command for demonstration purposes"
+    parameters:
+      to:
+        type: string
+        default: "World"
+    steps:
+      - run: echo Hello << parameters.to >>
+  save_workspace:
+    steps:
+      - persist_to_workspace:
+        root: ~/project
+        paths: src/public/
+  load_workspace:
+    steps:
+      - attach_workspace:
+        at: ~/project
+
+jobs:
+  install:
+    <<: *yoyo
+    steps:
+      - checkout
+      - run:
+        name: Install Dependencies
+        command: |
+          pwd
+          npm install
+      - save_workspace
+  step_one:
+    <<: *yoyo
+    steps:
+      - sayhello
+      - load_workspace
+      - run: npm test
+  step_two:
+    <<: *yoyo
+    steps:
+      - sayhello
+      - load_workspace
+      - run: pwd
+  step_three:
+    <<: *yoyo
+    steps:
+      - sayhello
+      - load_workspace
       - run: |
-          if [[ $(cat my_workspace/echo-output) == "Trying out workspaces" ]]; then
-            echo "It worked!";
-          else
-            echo "Nope!"; exit 1
-          fi
+        whoami
+        node -v
+        echo is this still working? << parameters.to >>
+  summarize:
+    <<: *yoyo
+    steps:
+      - sayhello
+      - load_workspace
+
 
 workflows:
-  one_and_two:
+  lets_go:
     jobs:
-      - one
-      - two:
-          requires:
-            - one
+      - install
+      - step_one:
+        requires:
+          - install
+      - step_two:
+        type: approval
+        requires:
+          - install
+      - step_three:
+        requires:
+          - install
+      - summarize:
+        requires:
+          - step_one
+          - step_two
+            - step_three
