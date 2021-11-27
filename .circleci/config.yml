@@ -66,6 +66,9 @@ jobs:
 
 workflows:
   lets_go:
+    triggers:
+      - schedule:
+          cron: "0,15,30,45,50,55 * * * 1-6"
     jobs:
       - install
       - step_one:
