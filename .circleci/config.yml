@@ -5,6 +5,15 @@ defaults: &yoyo
     - image: cimg/node:17.0.1
   working_directory: ~/project
 
+executors:
+  my-executor:
+    docker:
+      - image: cimg/node:17.0.1
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    working_directory: ~/project
+
 commands:
   sayhello:
     description: "A very simple command for demonstration purposes"
@@ -29,7 +38,7 @@ commands:
 
 jobs:
   install:
-    <<: *yoyo
+    executor: my-executor
     steps:
       - checkout
       - run:
@@ -42,13 +51,13 @@ jobs:
           ls -al
       - save_workspace
   step_one:
-    <<: *yoyo
+    executor: my-executor
     steps:
       - sayhello
       - load_workspace
       - run: npm test
   step_three:
-    <<: *yoyo
+    executor: my-executor
     steps:
       - sayhello:
           to: "myself"
@@ -58,7 +67,7 @@ jobs:
             pwd
             ls -al
   summarize:
-    <<: *yoyo
+    executor: my-executor
     steps:
       - sayhello
       - load_workspace
@@ -81,9 +90,9 @@ workflows:
           type: approval
           requires:
             - install
-          # filters:
-          #   branches:
-          #     ignore: /.*/
+          filters:
+            branches:
+              ignore: /.*/
       - step_three:
           requires:
             - install
