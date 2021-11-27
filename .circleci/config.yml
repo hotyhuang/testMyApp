@@ -66,12 +66,12 @@ jobs:
 
 workflows:
   lets_go:
-    triggers:
-      - schedule:
-          cron: "0,15,30,45,50,55 * * * 1-6"
-          filters:
-            branches:
-              only: /^getting.*/
+    # triggers:
+    #   - schedule:
+    #       cron: "0,15,30,45,50,55 * * * 1-6"
+    #       filters:
+    #         branches:
+    #           only: /^getting.*/
     jobs:
       - install
       - step_one:
@@ -81,6 +81,9 @@ workflows:
           type: approval
           requires:
             - install
+          filters:
+            branches:
+              ignore: /.*/
       - step_three:
           requires:
             - install
