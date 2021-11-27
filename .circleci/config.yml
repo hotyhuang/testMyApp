@@ -81,9 +81,9 @@ workflows:
           type: approval
           requires:
             - install
-          filters:
-            branches:
-              ignore: /.*/
+          # filters:
+          #   branches:
+          #     ignore: /.*/
       - step_three:
           requires:
             - install
