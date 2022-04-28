@@ -20,4 +20,9 @@ jobs:
       - run:
           name: Run tests
           command: npm test
+  i-am-fake:
+    steps:
+      - run:
+          name: List files
+          command: ls -al
           
