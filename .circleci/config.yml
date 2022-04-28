@@ -4,6 +4,7 @@ workflows:
   test-yoyo:
     jobs:
       - i-am-king-of-the-world
+      - i-am-fake
 
 jobs:
   i-am-king-of-the-world:
@@ -19,8 +20,10 @@ jobs:
           command: npm install
       - run:
           name: Run tests
-          command: npm test
+          command: npm start
   i-am-fake:
+    docker:
+      - image: ubuntu
     steps:
       - run:
           name: List files
