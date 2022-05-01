@@ -21,17 +21,17 @@ jobs:
           command: |
             pwd
             npm install
-      - save_cache: # Caches dependencies with a cache key
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/circleci-demo-workflows
+      # - save_cache: # Caches dependencies with a cache key
+      #     key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      #     paths:
+      #       - ~/circleci-demo-workflows
   list1:
     docker:
       - image: cimg/node:17.0.1
     working_directory: ~/circleci-demo-workflows
     steps:
-      - restore_cache: # Restores the cached dependency.
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      # - restore_cache: # Restores the cached dependency.
+      #     key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: list files
           command: |
@@ -42,8 +42,8 @@ jobs:
     docker:
       - image: ubuntu:latest
     steps:
-      - restore_cache: # Restores the cached dependency.
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      # - restore_cache: # Restores the cached dependency.
+      #     key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: list files
           working_directory: /home/circleci/circleci-demo-workflows
