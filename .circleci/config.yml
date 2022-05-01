@@ -13,8 +13,7 @@ jobs:
   install:
     docker:
       - image: cimg/node:17.0.1
-    # working_directory: ~/circleci-demo-workflows
-    working_directory: /tmp/my-output
+    working_directory: ~/circleci-demo-workflows
     steps:
       - checkout # check out the code in the project directory
       - run:
@@ -30,21 +29,20 @@ jobs:
       # into the workspace for use in downstream job. Must be an absolute path,
       # or relative path from working_directory. This is a directory on the container which is
       # taken to be the root directory of the workspace.
-          root: /tmp
+          root: /home/circleci
             # Must be relative path from root
           paths:
-            - my-output
+            - circleci-demo-workflows
   list1:
     docker:
       - image: cimg/node:17.0.1
-    # working_directory: ~/circleci-demo-workflows
-    working_directory: /tmp/my-output
+    working_directory: ~/circleci-demo-workflows
     steps:
       # - restore_cache: # Restores the cached dependency.
       #     key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - attach_workspace:
         # Must be absolute path or relative path from working_directory
-          at: /tmp/my-output
+          at: /home/circleci/circleci-demo-workflows
       - run:
           name: list files
           command: |
@@ -59,8 +57,7 @@ jobs:
       #     key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: list files
-          # working_directory: /home/circleci/circleci-demo-workflows
-          working_directory: /tmp/my-output
+          working_directory: /home/circleci/circleci-demo-workflows
           command: |
             pwd
             ls -al
